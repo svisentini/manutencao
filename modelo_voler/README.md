@@ -59,25 +59,5 @@ You can open the demo <a href="https://zuramai.github.io/voler/" target="_blank"
 - If you want to make some changes in the CSS style. Don't edit the `.css` file, use the SCSS file instead.
 - Since we use Nunjucks, if you want to make changes to the HTML structure, make sure you change the source file (Nunjucks) located in `src`.
 
-
-## 🧑 Author
-
-👤 <a href="http://ahmadsaugi.com">Ahmad Saugi</a>.
-- Github : <a href="https://github.com/zuramai"> @zuramai</a>
-
-## 🧑 Support me at : 
-
-- Trakteer : <a href="https://trakteer.id/saugi"> @saugi</a>
-
-## 📝 License
-- Copyright © 2022 Voler
-- **Voler is open-sourced software licensed under the MIT license**
-
-
-------------
-**Made with ❤️ by Voler**
-=======
-This repository is currently unavailable
-
 Check out my new template:
 [https://github.com/zuramai/mazer](https://github.com/zuramai/mazer)
