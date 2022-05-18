@@ -11,7 +11,7 @@ session_start();
     <title>Sign in - Manutenção</title>
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     
-    <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/images/logo-belver.png" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/app.css">
 </head>
 
@@ -24,7 +24,7 @@ session_start();
             <div class="card pt-4">
                 <div class="card-body">
                     <div class="text-center mb-5">
-                        <img src="assets/images/favicon.svg" height="48" class='mb-4'>
+                        <img src="assets/images/logo-belver.png" height="48" class='mb-4'>
                         <h3>Manutenção</h3>
                         <p></p>
                     </div>
