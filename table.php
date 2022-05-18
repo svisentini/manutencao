@@ -4,8 +4,7 @@ include('verifica_login.php');
 $itensPorPagina = 10;
 
 $paginaAtual = intval($_GET['pagina']);
-$quantidadeRegistros = 100;
-$quantidadePaginas = ceil($quantidadeRegistros/$itensPorPagina);
+
 
 ?>
 
@@ -97,6 +96,13 @@ $quantidadePaginas = ceil($quantidadeRegistros/$itensPorPagina);
               <?php
                 include 'conexao.php';
                 $pdo = Banco::conectar_tickets();
+
+                $quantidadeRegistros = $pdo->query("SELECT count(*) from qtde_registros")->fetchColumn();
+                $quantidadePaginas = ceil($quantidadeRegistros/$itensPorPagina);
+
+                
+
+
                 $sql = "SELECT * FROM qtde_registros ORDER BY id asc LIMIT 10, $itensPorPagina";
 
                 foreach($pdo->query($sql)as $row)
@@ -124,6 +130,7 @@ $quantidadePaginas = ceil($quantidadeRegistros/$itensPorPagina);
           </table>
 
           <div class="card-body">
+            <?php   echo '<h1> Esta com  = '. $quantidadeRegistros . '</h1>';  ?>
             <nav aria-label="Page navigation example">
                 <ul class="pagination pagination-primary">
                     <li class="page-item"><a class="page-link" href="#">Prev</a></li>
