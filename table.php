@@ -2,8 +2,18 @@
 include('verifica_login.php');
 
 $itensPorPagina = 10;
+$paginacaoLinksAntesDepois = 4;
 
-$paginaAtual = intval($_GET['pagina']);
+// Pegar a pagina atual por GET
+$paginaAtual = $_GET['page'];
+
+// Verifica se a variável tá declarada, senão deixa na primeira página como padrão
+if(isset($paginaAtual)) { 
+  $paginaAtual = $paginaAtual;
+} else { 
+  $paginaAtual = 1; 
+}
+
 
 
 ?>
@@ -117,13 +127,12 @@ $paginaAtual = intval($_GET['pagina']);
                 include 'conexao.php';
                 $pdo = Banco::conectar_tickets();
 
-                $quantidadeRegistros = $pdo->query("SELECT count(*) from qtde_registros")->fetchColumn();
-                $quantidadePaginas = ceil($quantidadeRegistros/$itensPorPagina);
-
                 
+                $InicioBusca = ($paginaAtual * $itensPorPagina) - $itensPorPagina;
 
 
-                $sql = "SELECT * FROM qtde_registros ORDER BY id asc LIMIT 10, $itensPorPagina";
+
+                $sql = "SELECT * FROM qtde_registros ORDER BY id asc LIMIT $InicioBusca, $itensPorPagina";
 
                 foreach($pdo->query($sql)as $row)
                 {
@@ -142,6 +151,11 @@ $paginaAtual = intval($_GET['pagina']);
                     echo '<td>'. $row['telefone'] . '</td>';
                   echo '</tr>';
                 }
+
+
+                $quantidadeTotalRegistros = $pdo->query("SELECT count(*) from qtde_registros")->fetchColumn();
+                $quantidadePaginas = ceil($quantidadeTotalRegistros / $itensPorPagina);
+
                 Banco::desconectar();
               ?>
 
@@ -150,16 +164,35 @@ $paginaAtual = intval($_GET['pagina']);
           </table>
 
           <div class="card-body">
-          <?php   echo '<h1> Qtde de registros  = '. $quantidadeRegistros . '</h1>';  ?>
+          <?php   echo '<h1> Qtde de registros  = '. $quantidadeTotalRegistros . '</h1>';  ?>
           <?php   echo '<h1> Qtde de paginas    = '. $quantidadePaginas . '</h1>';  ?>
             <nav aria-label="Page navigation example">
                 <ul class="pagination pagination-primary">
-                    <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="table.php?page=1">First</a></li>
+
+                    <?php
+                      // Paginas Anteriores
+                      for($i = $paginaAtual - $paginacaoLinksAntesDepois; $i <= $paginaAtual - 1; $i++) {
+                        if ($i > 0){
+                          echo '<li class="page-item"><a class="page-link" href="table.php?page=' .$i. '">' .$i. '</a></li>';
+                        }
+                      }
+                      // Pagina atual
+                      echo '<li class="page-item active"><a class="page-link" >' .$paginaAtual. '</a></li>';
+                      // Paginas posteriores
+                      for($i = $paginaAtual + 1; $i <= $paginaAtual + $paginacaoLinksAntesDepois; $i++) {
+                        if($i <= $quantidadePaginas){
+                          echo '<li class="page-item"><a class="page-link" href="table.php?page=' .$i. '">' .$i. '</a></li>';
+                        }
+                      }
+                      // Ultima página
+                      echo '<li class="page-item"><a class="page-link" href="table.php?page=' .$quantidadePaginas. '">Last</a></li>';
+                    ?>
+
+             
+                    
                 </ul>
+
             </nav>
           </div>
 
