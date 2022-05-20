@@ -2,7 +2,7 @@
 
 class Banco {
 
-    private static $dbNome = 'login';
+    private static $dbNome = 'manutencao-db-php';
     private static $dbHost = '127.0.0.1';
     private static $dbUsuario = 'root';
     private static $dbSenha = '';
@@ -21,7 +21,7 @@ class Banco {
     }
 
 
-    public static function conectar_tickets(){
+    public static function conectar_consulta(){
         if(null == self::$cont){
             try{
                 self::$cont =  new PDO( "mysql:host=".self::$dbHost.";"."dbname=".self::$dbNome, self::$dbUsuario, self::$dbSenha); 
