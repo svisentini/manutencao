@@ -70,14 +70,34 @@ $paginaAtual = intval($_GET['pagina']);
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title">Striped rows</h4>
+        <h3 class="card-title">Clientes</h3>
       </div>
       <div class="card-content">
         <div class="card-body">
-          <p class="card-text">Use <code class="highlighter-rouge">.table-striped</code> to add zebra-striping to any
-            table row within the <code class="highlighter-rouge">&lt;tbody&gt;</code>. This styling doesn't work in IE8
-            and below as <code>:nth-child</code> CSS selector isn't supported.</p>
+          
+
+            <div class="col-md-1 mb-1">
+              <p>Qtde de registros</p>
+              <fieldset class="form-group">
+                  <select class="form-select" id="basicSelect">
+                    <option>5</option>
+                    <option selected>10</option>
+                    <option>20</option>
+                    <option>30</option>
+                    <option>40</option>
+                  </select>
+              </fieldset>
+            </div>
+
         </div>
+
+
+        <script type="text/javascript">
+          document.getElementById('basicSelect').onChange = function(){
+            console.log "teste";
+          }
+        </script>
+
         <!-- table striped -->
         <div class="table-responsive">
           <table class="table mb-0">
@@ -130,7 +150,8 @@ $paginaAtual = intval($_GET['pagina']);
           </table>
 
           <div class="card-body">
-            <?php   echo '<h1> Esta com  = '. $quantidadeRegistros . '</h1>';  ?>
+          <?php   echo '<h1> Qtde de registros  = '. $quantidadeRegistros . '</h1>';  ?>
+          <?php   echo '<h1> Qtde de paginas    = '. $quantidadePaginas . '</h1>';  ?>
             <nav aria-label="Page navigation example">
                 <ul class="pagination pagination-primary">
                     <li class="page-item"><a class="page-link" href="#">Prev</a></li>
