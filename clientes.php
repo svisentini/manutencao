@@ -75,7 +75,8 @@ if(isset($paginaAtual)) {
 
 
 
-<!-- Striped rows start -->
+<!-- TABELA DE CLIENTES -->
+
 <div class="row" id="table-striped">
   <div class="col-12">
     <div class="card">
@@ -91,7 +92,7 @@ if(isset($paginaAtual)) {
               <div class="form-group">
                 <label for="filtro-codigo">Código</label>
                 <input type="text" id="filtro-codigo" class="form-control" placeholder="Código"
-                       name="input-codigo">
+                       name="codigo">
               </div>
             </div>
 
@@ -99,7 +100,8 @@ if(isset($paginaAtual)) {
               <div class="form-group">
                 <label for="filtro-nome">Nome</label>
                 <input type="text" id="filtro-nome" class="form-control" placeholder="Nome"
-                       name="input-nome">
+                    value="<?php echo isset($_GET['nome']) ? $_GET['nome'] : ''; ?>"   
+                    name="nome">
               </div>
             </div>
 
@@ -107,7 +109,7 @@ if(isset($paginaAtual)) {
               <div class="form-group">
                 <label for="filtro-cidade">Cidade</label>
                 <input type="text" id="filtro-cidade" class="form-control" placeholder="Cidade"
-                       name="input-cidade">
+                       name="cidade">
               </div>
             </div>
 
@@ -115,7 +117,7 @@ if(isset($paginaAtual)) {
               <div class="form-group">
                 <label for="filtro-funcao">Função</label>
                 <input type="text" id="filtro-funcao" class="form-control" placeholder="Função"
-                       name="input-funcao">
+                       name="funcao">
               </div>
             </div>
 
@@ -156,9 +158,19 @@ if(isset($paginaAtual)) {
                 
                 $InicioBusca = ($paginaAtual * $itensPorPagina) - $itensPorPagina;
 
+                unset($_REQUEST['page']);
+                $filtros = "";
+                $nome = "";
 
+                $sql = "SELECT codigo,nome,cidade,funcao FROM clientes WHERE 1=1 ";
+                
+                // Filtro do nome
+                if (!empty($_GET['nome'])){
+                  $nome = $_GET['nome'];
+                  $filtro = " AND nome LIKE '%$nome%' ";
+                }
 
-                $sql = "SELECT codigo,nome,cidade,funcao FROM clientes ORDER BY nome asc LIMIT $InicioBusca, $itensPorPagina";
+                $sql .= $filtro . " ORDER BY nome asc LIMIT $InicioBusca, $itensPorPagina";
 
                 foreach($pdo->query($sql)as $row)
                 {
@@ -179,7 +191,7 @@ if(isset($paginaAtual)) {
                 }
 
 
-                $quantidadeTotalRegistros = $pdo->query("SELECT count(*) from clientes")->fetchColumn();
+                $quantidadeTotalRegistros = $pdo->query("SELECT count(*) from clientes WHERE 1=1 " . $filtro)->fetchColumn();
                 $quantidadePaginas = ceil($quantidadeTotalRegistros / $itensPorPagina);
 
                 Banco::desconectar();
@@ -189,18 +201,26 @@ if(isset($paginaAtual)) {
             </tbody>
           </table>
 
+
+          <!-- PAGINACAO -->
+
           <div class="card-body">
           <?php   echo '<h1> Qtde de registros  = '. $quantidadeTotalRegistros . '</h1>';  ?>
           <?php   echo '<h1> Qtde de paginas    = '. $quantidadePaginas . '</h1>';  ?>
+          <?php $parametrosUrl =  http_build_query($_REQUEST); ?>
+          <?php   echo '<h1> Parametros    = '. $parametrosUrl . '</h1>';  ?>
+          
+          
             <nav aria-label="Page navigation example">
                 <ul class="pagination pagination-primary">
-                    <li class="page-item"><a class="page-link" href="clientes.php?page=1">First</a></li>
-
                     <?php
+                      // Primeira página
+                      echo '<li class="page-item"><a class="page-link" href="clientes.php?page=1&' .$parametrosUrl . '">First</a></li>';
+
                       // Paginas Anteriores
                       for($i = $paginaAtual - $paginacaoLinksAntesDepois; $i <= $paginaAtual - 1; $i++) {
                         if ($i > 0){
-                          echo '<li class="page-item"><a class="page-link" href="clientes.php?page=' .$i. '">' .$i. '</a></li>';
+                          echo '<li class="page-item"><a class="page-link" href="clientes.php?page=' .$i. '&' . $parametrosUrl . '">' .$i. '</a></li>';
                         }
                       }
                       // Pagina atual
@@ -208,11 +228,11 @@ if(isset($paginaAtual)) {
                       // Paginas posteriores
                       for($i = $paginaAtual + 1; $i <= $paginaAtual + $paginacaoLinksAntesDepois; $i++) {
                         if($i <= $quantidadePaginas){
-                          echo '<li class="page-item"><a class="page-link" href="clientes.php?page=' .$i. '">' .$i. '</a></li>';
+                          echo '<li class="page-item"><a class="page-link" href="clientes.php?page=' .$i. '&' .$parametrosUrl . '">' .$i. '</a></li>';
                         }
                       }
                       // Ultima página
-                      echo '<li class="page-item"><a class="page-link" href="clientes.php?page=' .$quantidadePaginas. '">Last</a></li>';
+                      echo '<li class="page-item"><a class="page-link" href="clientes.php?page=' .$quantidadePaginas. '&' .$parametrosUrl . '">Last</a></li>';
                     ?>
 
              
@@ -228,132 +248,11 @@ if(isset($paginaAtual)) {
     </div>
   </div>
 </div>
-<!-- Striped rows end -->
+<!-- FIM DA TABELA DE CLIENTES -->
 
 
 
-<!-- Contextual classes start -->
-<div class="row" id="table-contexual">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-header">
-        <h4 class="card-title">Contextual classes</h4>
-      </div>
-      <div class="card-content">
-        <div class="card-body">
-          <p>Use contextual classes to color table rows or individual cells. Read full documnetation <a
-              href="https://getbootstrap.com/docs/4.3/content/tables/#contextual-classes" target="_blank">here.</a></p>
-        </div>
-        <!-- table contextual / colored -->
-        <div class="table-responsive">
-          <table class="table mb-0">
-            <thead>
-              <tr>
-                <th>NAME</th>
-                <th>RATE</th>
-                <th>SKILL</th>
-                <th>TYPE</th>
-                <th>LOCATION</th>
-                <th>ACTION</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="table-active">
-                <td class="text-bold-500">Michael Right</td>
-                <td>$15/hr</td>
-                <td class="text-bold-500">UI/UX</td>
-                <td>Remote</td>
-                <td>Austin,Taxes</td>
-                <td><a href="#"><i
-                      class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
-              </tr>
-              <tr class="table-primary">
-                <td class="text-bold-500">Morgan Vanblum</td>
-                <td>$13/hr</td>
-                <td class="text-bold-500">Graphic concepts</td>
-                <td>Remote</td>
-                <td>Shangai,China</td>
-                <td><a href="#"><i
-                      class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
-              </tr>
-              <tr class="table-secondary">
-                <td class="text-bold-500">Tiffani Blogz</td>
-                <td>$15/hr</td>
-                <td class="text-bold-500">Animation</td>
-                <td>Remote</td>
-                <td>Austin,Texas</td>
-                <td><a href="#"><i
-                      class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
-              </tr>
-              <tr class="table-success">
-                <td class="text-bold-500">Ashley Boul</td>
-                <td>$15/hr</td>
-                <td class="text-bold-500">Animation</td>
-                <td>Remote</td>
-                <td>Austin,Texas</td>
-                <td><a href="#"><i
-                      class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
-              </tr>
-              <tr class="table-danger">
-                <td class="text-bold-500">Mikkey Mice</td>
-                <td>$15/hr</td>
-                <td class="text-bold-500">Animation</td>
-                <td>Remote</td>
-                <td>Austin,Texas</td>
-                <td><a href="#"><i
-                      class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
-              </tr>
-              <tr class="table-warning">
-                <td class="text-bold-500">Mikkey Mice</td>
-                <td>$15/hr</td>
-                <td class="text-bold-500">Animation</td>
-                <td>Remote</td>
-                <td>Austin,Texas</td>
-                <td><a href="#"><i
-                      class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
-              </tr>
-              <tr class="table-info">
-                <td class="text-bold-500">Mikkey Mice</td>
-                <td>$15/hr</td>
-                <td class="text-bold-500">Animation</td>
-                <td>Remote</td>
-                <td>Austin,Texas</td>
-                <td><a href="#"><i
-                      class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
-              </tr>
-              <tr class="table-light">
-                <td class="text-bold-500">Mikkey Mice</td>
-                <td>$15/hr</td>
-                <td class="text-bold-500">Animation</td>
-                <td>Remote</td>
-                <td>Austin,Texas</td>
-                <td><a href="#"><i
-                      class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
-              </tr>
-              <tr class="table-dark">
-                <td class="text-bold-500">Mikkey Mice</td>
-                <td>$15/hr</td>
-                <td class="text-bold-500">Animation</td>
-                <td>Remote</td>
-                <td>Austin,Texas</td>
-                <td><a href="#"><i
-                      class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
-              </tr>
-            </tbody>
-          </table>
 
-          </p>
-          <h3> Teste </h3>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Contextual classes end -->
-
-
-</div>
 
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
@@ -363,8 +262,7 @@ if(isset($paginaAtual)) {
              
                 </div>
             </footer>
-        </div>
-    </div>
+
     <?php include('templates/template_footer.php'); ?>
 </body>
 </html>
