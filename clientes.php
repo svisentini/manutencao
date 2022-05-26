@@ -1,20 +1,16 @@
 <?php
-include('verifica_login.php');
+    include('verifica_login.php');
 
-$itensPorPagina = 10;
-$paginacaoLinksAntesDepois = 4;
+    $itensPorPagina = 10;
+    $paginacaoLinksAntesDepois = 4;
+    $paginaAtual = 1;
 
-// Pegar a pagina atual por GET
-$paginaAtual = $_GET['page'];
-
-// Verifica se a variável tá declarada, senão deixa na primeira página como padrão
-if(isset($paginaAtual)) { 
-  $paginaAtual = $paginaAtual;
-} else { 
-  $paginaAtual = 1; 
-}
-
-
+    // Verifica se existe o parametro "page", senão deixa na primeira página como padrão
+    if(isset($_GET['page'])) { 
+      $paginaAtual = $paginaAtual;
+    } else { 
+      $paginaAtual = 1; 
+    }
 
 ?>
 
@@ -155,22 +151,19 @@ if(isset($paginaAtual)) {
                 include 'conexao.php';
                 $pdo = Banco::conectar_consulta();
 
-                
                 $InicioBusca = ($paginaAtual * $itensPorPagina) - $itensPorPagina;
 
                 unset($_REQUEST['page']);
-                $filtros = "";
-                $nome = "";
-
-                $sql = "SELECT codigo,nome,cidade,funcao FROM clientes WHERE 1=1 ";
-                
-                // Filtro do nome
-                if (!empty($_GET['nome'])){
-                  $nome = $_GET['nome'];
-                  $filtro = " AND nome LIKE '%$nome%' ";
+                $filtroClientes = "";
+                                
+                // Filtro Clientes pelo nome
+                if (!empty($_GET['nome'])){ 
+                  $filtroClientes = " AND nome LIKE '%" . $_GET['nome'] . "%' "; 
                 }
 
-                $sql .= $filtro . " ORDER BY nome asc LIMIT $InicioBusca, $itensPorPagina";
+                $quantidadeTotalRegistros = $pdo->query("SELECT count(*) from clientes WHERE 1=1 " . $filtroClientes)->fetchColumn();
+                $quantidadePaginas = ceil($quantidadeTotalRegistros / $itensPorPagina);
+                $sql = "SELECT codigo,nome,cidade,funcao FROM clientes WHERE 1=1 " . $filtroClientes . " ORDER BY nome asc LIMIT $InicioBusca, $itensPorPagina";
 
                 foreach($pdo->query($sql)as $row)
                 {
@@ -189,11 +182,7 @@ if(isset($paginaAtual)) {
                     echo '<td>'. $row['funcao'] . '</td>';
                   echo '</tr>';
                 }
-
-
-                $quantidadeTotalRegistros = $pdo->query("SELECT count(*) from clientes WHERE 1=1 " . $filtro)->fetchColumn();
-                $quantidadePaginas = ceil($quantidadeTotalRegistros / $itensPorPagina);
-
+                
                 Banco::desconectar();
               ?>
 
@@ -204,11 +193,18 @@ if(isset($paginaAtual)) {
 
           <!-- PAGINACAO -->
 
+         
+
+
+
           <div class="card-body">
-          <?php   echo '<h1> Qtde de registros  = '. $quantidadeTotalRegistros . '</h1>';  ?>
-          <?php   echo '<h1> Qtde de paginas    = '. $quantidadePaginas . '</h1>';  ?>
+
+          <div class="float-end">
+              <h5> Quantidade de Registros = <?php echo $quantidadeTotalRegistros; ?></h5>
+              <h5> Quantidade de Páginas = <?php echo $quantidadePaginas; ?></h5>
+          </div>
+
           <?php $parametrosUrl =  http_build_query($_REQUEST); ?>
-          <?php   echo '<h1> Parametros    = '. $parametrosUrl . '</h1>';  ?>
           
           
             <nav aria-label="Page navigation example">
@@ -233,6 +229,8 @@ if(isset($paginaAtual)) {
                       }
                       // Ultima página
                       echo '<li class="page-item"><a class="page-link" href="clientes.php?page=' .$quantidadePaginas. '&' .$parametrosUrl . '">Last</a></li>';
+
+                      
                     ?>
 
              
@@ -240,6 +238,11 @@ if(isset($paginaAtual)) {
                 </ul>
 
             </nav>
+            
+            
+            
+
+
           </div>
 
 
