@@ -84,7 +84,14 @@
         <form class="form">
           <div class="row">
 
-          <div class="col-md-2 col-12">
+            <div class="col-md-1 col-12">
+              <div class="form-group">
+                </br>   
+                <button type="submit" class="btn btn-primary me-1 mb-1"> Filtrar </button>
+              </div>
+            </div>
+
+            <div class="col-md-1 col-12">
               <div class="form-group">
                 <label for="filtro-codigo">Código</label>
                 <input type="text" id="filtro-codigo" class="form-control" placeholder="Código"
@@ -92,7 +99,7 @@
               </div>
             </div>
 
-            <div class="col-md-5 col-12">
+            <div class="col-md-4 col-12">
               <div class="form-group">
                 <label for="filtro-nome">Nome</label>
                 <input type="text" id="filtro-nome" class="form-control" placeholder="Nome"
@@ -101,7 +108,7 @@
               </div>
             </div>
 
-            <div class="col-md-3 col-12">
+            <div class="col-md-2 col-12">
               <div class="form-group">
                 <label for="filtro-cidade">Cidade</label>
                 <input type="text" id="filtro-cidade" class="form-control" placeholder="Cidade"
@@ -114,13 +121,6 @@
                 <label for="filtro-funcao">Função</label>
                 <input type="text" id="filtro-funcao" class="form-control" placeholder="Função"
                        name="funcao">
-              </div>
-            </div>
-
-            <div class="float-right">
-              <div class="form-group">
-                </br>   
-                <button type="submit" class="btn btn-primary me-1 mb-1"> Filtrar </button>
               </div>
             </div>
 
