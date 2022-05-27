@@ -57,7 +57,7 @@
                             <nav aria-label="breadcrumb" class='breadcrumb-header'>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="index.html">Menu</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Cadastro de Clientes</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Clientes</li>
                                 </ol>
                             </nav>
                         </div>
@@ -84,6 +84,7 @@
         <form class="form">
           <div class="row">
 
+            <!-- Botao FILTRAR -->
             <div class="col-md-2 col-12">
               <div class="form-group">
                 </br>   
@@ -91,14 +92,17 @@
               </div>
             </div>
 
+            <!-- Codigo -->
             <div class="col-md-2 col-12">
               <div class="form-group">
                 <label for="filtro-codigo">Código</label>
                 <input type="text" id="filtro-codigo" class="form-control" placeholder="Código"
+                       value="<?php echo isset($_GET['codigo']) ? $_GET['codigo'] : ''; ?>"   
                        name="codigo">
               </div>
             </div>
 
+            <!-- Nome -->
             <div class="col-md-4 col-12">
               <div class="form-group">
                 <label for="filtro-nome">Nome</label>
@@ -108,25 +112,25 @@
               </div>
             </div>
 
+            <!-- Cidade -->
             <div class="col-md-2 col-12">
               <div class="form-group">
                 <label for="filtro-cidade">Cidade</label>
                 <input type="text" id="filtro-cidade" class="form-control" placeholder="Cidade"
-                       name="cidade">
+                      value="<?php echo isset($_GET['cidade']) ? $_GET['cidade'] : ''; ?>"   
+                      name="cidade">
               </div>
             </div>
 
+            <!-- Função -->
             <div class="col-md-2 col-12">
               <div class="form-group">
                 <label for="filtro-funcao">Função</label>
-                
-
-                       <select class="form-select" name="funcao">
-                                            <option <?php echo ($_GET['funcao'] == 'Todos') ? 'selected' : '' ?> >Todos</option>
-                                            <option <?php echo ($_GET['funcao'] == 'Cliente') ? 'selected' : '' ?> >Cliente</option>
-                                            <option <?php echo ($_GET['funcao'] == 'Transportadora') ? 'selected' : '' ?> >Transportadora</option>
-                                        </select>
-
+                    <select class="form-select" name="funcao">
+                      <option <?php echo ($_GET['funcao'] == 'Todos') ?          'selected' : '' ?> >Todos</option>
+                      <option <?php echo ($_GET['funcao'] == 'Cliente') ?        'selected' : '' ?> >Cliente</option>
+                      <option <?php echo ($_GET['funcao'] == 'Transportadora') ? 'selected' : '' ?> >Transportadora</option>
+                    </select>
 
               </div>
             </div>
@@ -165,13 +169,21 @@
                          
                 // ===========================================================
                 // FILTRO DOS CLIENTES
-                // NOME
+                // Nome
                 if (!empty($_GET['nome'])){ 
                   $filtroClientes = " AND nome LIKE '%" . $_GET['nome'] . "%' "; 
                 }
-                // FUNÇÃO
+                // Função
                 if (!empty($_GET['funcao']) && $_GET['funcao'] != 'Todos'){ 
                   $filtroClientes .= " AND funcao = '" . $_GET['funcao'] . "' "; 
+                }
+                // Código
+                if (!empty($_GET['codigo'])){ 
+                  $filtroClientes .= " AND codigo LIKE '%" . $_GET['codigo'] . "%' "; 
+                }
+                // Cidade
+                if (!empty($_GET['cidade'])){ 
+                  $filtroClientes .= " AND cidade LIKE '%" . $_GET['cidade'] . "%' "; 
                 }
                 // ===========================================================
                 

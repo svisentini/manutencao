@@ -16,6 +16,14 @@
                     </a>
                 </li>
                 
+                <!-- Clientes -->
+                <li class="sidebar-item  ">
+                    <a href="clientes.php?page=1" class='sidebar-link'>
+                        <i data-feather="user" width="20"></i> 
+                        <span>Clientes</span>
+                    </a>
+                </li>
+                
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i data-feather="triangle" width="20"></i> 
