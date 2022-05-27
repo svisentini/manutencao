@@ -7,7 +7,7 @@
 
     // Verifica se existe o parametro "page", senão deixa na primeira página como padrão
     if(isset($_GET['page'])) { 
-      $paginaAtual = $paginaAtual;
+      $paginaAtual = $_GET['page'];
     } else { 
       $paginaAtual = 1; 
     }
@@ -84,14 +84,14 @@
         <form class="form">
           <div class="row">
 
-            <div class="col-md-1 col-12">
+            <div class="col-md-2 col-12">
               <div class="form-group">
                 </br>   
                 <button type="submit" class="btn btn-primary me-1 mb-1"> Filtrar </button>
               </div>
             </div>
 
-            <div class="col-md-1 col-12">
+            <div class="col-md-2 col-12">
               <div class="form-group">
                 <label for="filtro-codigo">Código</label>
                 <input type="text" id="filtro-codigo" class="form-control" placeholder="Código"
@@ -119,8 +119,15 @@
             <div class="col-md-2 col-12">
               <div class="form-group">
                 <label for="filtro-funcao">Função</label>
-                <input type="text" id="filtro-funcao" class="form-control" placeholder="Função"
-                       name="funcao">
+                
+
+                       <select class="form-select" name="funcao">
+                                            <option <?php echo ($_GET['funcao'] == 'Todos') ? 'selected' : '' ?> >Todos</option>
+                                            <option <?php echo ($_GET['funcao'] == 'Cliente') ? 'selected' : '' ?> >Cliente</option>
+                                            <option <?php echo ($_GET['funcao'] == 'Transportadora') ? 'selected' : '' ?> >Transportadora</option>
+                                        </select>
+
+
               </div>
             </div>
 
@@ -155,12 +162,19 @@
 
                 unset($_REQUEST['page']);
                 $filtroClientes = "";
-                                
-                // Filtro Clientes pelo nome
+                         
+                // ===========================================================
+                // FILTRO DOS CLIENTES
+                // NOME
                 if (!empty($_GET['nome'])){ 
                   $filtroClientes = " AND nome LIKE '%" . $_GET['nome'] . "%' "; 
                 }
-
+                // FUNÇÃO
+                if (!empty($_GET['funcao']) && $_GET['funcao'] != 'Todos'){ 
+                  $filtroClientes .= " AND funcao = '" . $_GET['funcao'] . "' "; 
+                }
+                // ===========================================================
+                
                 $quantidadeTotalRegistros = $pdo->query("SELECT count(*) from clientes WHERE 1=1 " . $filtroClientes)->fetchColumn();
                 $quantidadePaginas = ceil($quantidadeTotalRegistros / $itensPorPagina);
                 $sql = "SELECT codigo,nome,cidade,funcao FROM clientes WHERE 1=1 " . $filtroClientes . " ORDER BY nome asc LIMIT $InicioBusca, $itensPorPagina";
