@@ -18,7 +18,7 @@
 <html lang="en">
 <head>
     
-    <title>Manutenção - Table</title>
+    <title>Manutenção - Clientes</title>
     <?php include('templates/template_header.php'); ?>
 
 </head>
@@ -67,8 +67,28 @@
                 </div>
 
 
-
-
+<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" relo="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> Delete Student Data </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="deletecode.php" method="post">
+        <div class="modal-body">
+          <input type="hidden" name="update_id" id="update_id">
+          <h4> Do you want to delete this Data ?</h4>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"> NO </button>
+          <button type="submit" name="updatedata" class="btn btn-primary"> YES, delete it. </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 
 <!-- TABELA DE CLIENTES -->
@@ -196,9 +216,9 @@
                   echo '<tr class="table-danger">';
                     // Operations
                     echo '<td>';
-                    echo '<a href="#"><i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="edit"></i></a>';
+                    echo '<a href="clientes_edit.php?codigo=' . $row['codigo'] . '"><i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="edit"></i></a>';
                     echo ' ';
-                    echo '<a href="#"><i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="delete"></i></a>';
+                    echo '<a href="clientes_delete.php?codigo=' . $row['codigo'] . '"><i class="badge-circle badge-circle-light-secondary font-medium-1 deletebtn" data-feather="delete"></i></a>';
                     echo '</td>';
                     
                     // Data
@@ -292,6 +312,15 @@
                 </div>
             </footer>
 
-    <?php include('templates/template_footer.php'); ?>
+  <?php include('templates/template_footer.php'); ?>
+  <script 
+  
+    $(document).ready(function () {
+      $('.deletebtn').on('click', function()) {
+        $('#deletemodal').modal('show');
+      });
+    });
+  
+  </script>
 </body>
 </html>
