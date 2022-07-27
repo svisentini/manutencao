@@ -1,7 +1,4 @@
-on: 
-  push:
-    branches:
-      -main
+on: push
 name: 🚀 Deploy Manutenção site on push
 jobs:
   web-deploy:
