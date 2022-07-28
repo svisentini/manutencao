@@ -2,10 +2,19 @@
 
 class Banco {
 
-    private static $dbNome = 'manutencao-db-php';
+    // -----------------------------------------------
+    // LOCAL
+    //private static $dbNome = 'manutencao-db-php';
+    //private static $dbHost = '127.0.0.1';
+    //private static $dbUsuario = 'root';
+    //private static $dbSenha = '';
+    // -----------------------------------------------
+    // PROD
+    private static $dbNome = '380267';
     private static $dbHost = '127.0.0.1';
-    private static $dbUsuario = 'root';
-    private static $dbSenha = '';
+    private static $dbUsuario = '380267';
+    private static $dbSenha = 'SVfreeweb1!';
+    // -----------------------------------------------
     
     private static $cont = null;
     private static $conexao = null;
