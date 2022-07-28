@@ -253,6 +253,7 @@
           <?php $parametrosUrl =  http_build_query($_REQUEST); ?>
           
           
+          
             <nav aria-label="Page navigation example">
                 <ul class="pagination pagination-primary">
                     <?php
